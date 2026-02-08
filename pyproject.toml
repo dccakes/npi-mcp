@@ -1,0 +1,9 @@
+[project]
+name = "npi-mcp"
+version = "0.1.0"
+description = "MCP Server for the NPI registry"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp>=3.0.0b2",
+]
