@@ -13,6 +13,7 @@ class TestSettings(BaseSettings):
 
 settings = TestSettings()
 
+# Use a different name so we don't shadow the vcr module (fixes type checker)
 vcr_instance: vcr.VCR = vcr.VCR(
     cassette_library_dir=settings.vcr_cassette_library_dir,
     record_mode=settings.vcr_record_mode,
