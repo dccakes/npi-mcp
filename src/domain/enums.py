@@ -147,23 +147,53 @@ class NpiEnumerationType(BaseNpiEnum):
 
 
 class NpiStatus(BaseNpiEnum):
-    A = "ACTIVE"
-    I = "INACTIVE"  # noqa
-    P = "PENDING"
-    R = "REJECTED"
-    S = "SUSPENDED"
-    T = "TERMINATED"
-    U = "UNCLAIMED"
-    W = "WITHDRAWN"
-    X = "EXPIRED"
-    Y = "DECEASED"
+    A = "A"
+    I = "I"  # noqa
+    P = "P"
+    R = "R"
+    S = "S"
+    T = "T"
+    U = "U"
+    W = "W"
+    X = "X"
+    Y = "Y"
+
+    _display_names: ClassVar[dict[str, str]] = {
+        "A": "ACTIVE",
+        "I": "INACTIVE",
+        "P": "PENDING",
+        "R": "REJECTED",
+        "S": "SUSPENDED",
+        "T": "TERMINATED",
+        "U": "UNCLAIMED",
+        "W": "WITHDRAWN",
+        "X": "EXPIRED",
+        "Y": "DECEASED",
+    }
+
+    @property
+    def display_name(self) -> str:
+        """Full name for display, e.g. A -> ACTIVE."""
+        return self._display_names.get(self.value, self.value)
 
 
 class NpiSex(BaseNpiEnum):
-    M = "MALE"
-    F = "FEMALE"
-    X = "UNSPECIFIED"
-    U = "UNDISCLOSED"
+    M = "M"
+    F = "F"
+    X = "X"
+    U = "U"
+
+    _display_names: ClassVar[dict[str, str]] = {
+        "M": "MALE",
+        "F": "FEMALE",
+        "X": "UNSPECIFIED",
+        "U": "UNDISCLOSED",
+    }
+
+    @property
+    def display_name(self) -> str:
+        """Full name for display, e.g. M -> MALE."""
+        return self._display_names.get(self.value, self.value)
 
 
 class NpiCountryAbbreviation(BaseNpiEnum):

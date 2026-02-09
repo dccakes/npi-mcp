@@ -1,4 +1,6 @@
-from pydantic import BaseModel, ConfigDict, Field
+from typing import Annotated, Literal
+
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 import datetime as dt
 from src.domain.enums import (
     NpiSex,
@@ -11,24 +13,6 @@ from src.domain.enums import (
 
 class NpiBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-
-
-class ProviderResponse(NpiBase):
-    number: str = Field(description="The 10-digit NPI number")
-    enumeration_type: NpiEnumerationType = Field(description="The enumeration type")
-    created_epoch: dt.datetime = Field(description="The created epoch")
-    last_updated_epoch: dt.datetime = Field(description="The last updated epoch")
-    basic: "PersonProvider | OrganizationProvider" = Field(
-        description="The basic provider information"
-    )
-    addresses: list["Address"] | None = Field(default=None, description="The addresses")
-    taxonomies: list["Taxonomy"] | None = Field(
-        default=None, description="The taxonomies"
-    )
-    # identifiers: list["Identifier"] | None = Field(default=None, description="The identifiers")
-    # other_names: list["OtherName"] | None = Field(default=None, description="The other names")
-    # practiceLocations: list["PracticeLocation"] | None = Field(default=None, description="The practice locations")
-    # endpoints: list["Endpoint"] | None = Field(default=None, description="The endpoints")
 
 
 class PersonProvider(NpiBase):
@@ -87,6 +71,32 @@ class OrganizationProvider(NpiBase):
     )
 
 
+class _ProviderResponseBase(NpiBase):
+    number: str = Field(description="The 10-digit NPI number")
+    created_epoch: dt.datetime = Field(description="The created epoch")
+    last_updated_epoch: dt.datetime = Field(description="The last updated epoch")
+    addresses: list["Address"] | None = Field(default=None, description="The addresses")
+    taxonomies: list["Taxonomy"] | None = Field(
+        default=None, description="The taxonomies"
+    )
+
+
+class IndividualProviderResponse(_ProviderResponseBase):
+    enumeration_type: Literal[NpiEnumerationType.NPI_1] = NpiEnumerationType.NPI_1
+    basic: PersonProvider = Field(description="The basic provider information")
+
+
+class OrganizationProviderResponse(_ProviderResponseBase):
+    enumeration_type: Literal[NpiEnumerationType.NPI_2] = NpiEnumerationType.NPI_2
+    basic: OrganizationProvider = Field(description="The basic provider information")
+
+
+ProviderResponse = Annotated[
+    IndividualProviderResponse | OrganizationProviderResponse,
+    Field(discriminator="enumeration_type"),
+]
+
+
 class Address(NpiBase):
     address_1: str | None = Field(default=None, description="The address 1")
     address_2: str | None = Field(default=None, description="The address 2")
@@ -136,7 +146,20 @@ class Endpoint(NpiBase):
 
 class SearchResponse(NpiBase):
     result_count: int = Field(description="The result count")
-    results: list["ProviderResponse"] = Field(description="The results")
+    results: list[ProviderResponse] = Field(description="The results")
+
+    @model_validator(mode="before")
+    @classmethod
+    def coerce_enumeration_type_to_enum(cls, data: object) -> object:
+        """Coerce raw API 'NPI-1'/'NPI-2' strings to enum so the discriminated union matches."""
+        if not isinstance(data, dict) or "results" not in data:
+            return data
+        for result in data["results"]:  # type: ignore[union-attr]
+            if isinstance(result, dict) and "enumeration_type" in result:
+                raw = result["enumeration_type"]
+                if isinstance(raw, str):
+                    result["enumeration_type"] = NpiEnumerationType(raw)
+        return data
 
 
 class ErrorResponse(NpiBase):
@@ -149,4 +172,4 @@ class Error(NpiBase):
     number: str = Field(description="The number")
 
 
-ProviderResponse.model_rebuild()
+SearchResponse.model_rebuild()
