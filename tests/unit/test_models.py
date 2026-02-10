@@ -121,7 +121,7 @@ def test_search_response_parsing():
 
 def test_error_response_parsing():
     result = ErrorResponse(
-        errors=[
+        Errors=[
             Error(
                 description="Invalid request",
                 field="first_name",

@@ -1,7 +1,11 @@
 import httpx
-from src.domain.models import SearchResponse
+from src.domain.models import SearchResponse, ErrorResponse
 from src.domain.enums import NpiEnumerationType
 from pydantic import BaseModel, Field
+
+
+class NpiApiError(Exception):
+    pass
 
 
 class NpiSearchRequest(BaseModel):
@@ -33,13 +37,19 @@ class NpiClient:
         self.base_url = "https://npiregistry.cms.hhs.gov/api/"
         self.version = "2.1"
 
-    async def lookup(self, request: NpiWhere) -> SearchResponse | None:
+    async def lookup(self, request: NpiWhere) -> SearchResponse | ErrorResponse:
         params = request.model_dump(exclude_none=True, by_alias=True)
-        response = await self.client.get(self.base_url, params=params)
+        try:
+            response = await self.client.get(self.base_url, params=params)
+        except httpx.HTTPError as exc:  # network, timeout, DNS, etc.
+            raise NpiApiError("Network error while calling NPI registry") from exc
 
         if response.status_code != 200:
-            raise Exception(f"Failed to lookup NPI number: {response.status_code}")
+            raise NpiApiError(f"Failed to lookup NPI: {response.status_code}")
 
         data = response.json()
+
+        if "Errors" in data:
+            return ErrorResponse.model_validate(data)
 
         return SearchResponse.model_validate(data)

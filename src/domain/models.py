@@ -12,7 +12,10 @@ from src.domain.enums import (
 
 
 class NpiBase(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,
+    )
 
     enumeration_date: dt.date | None = Field(
         default=None, description="The enumeration date"
@@ -160,7 +163,7 @@ class SearchResponse(NpiBase):
 
 
 class ErrorResponse(NpiBase):
-    errors: list["Error"] = Field(description="The errors")
+    errors: list["Error"] = Field(description="The errors", alias="Errors")
 
 
 class Error(NpiBase):

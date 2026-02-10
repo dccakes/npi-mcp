@@ -6,6 +6,7 @@ from src.domain.models import (
     NpiEnumerationType,
     IndividualProviderResponse,
     OrganizationProviderResponse,
+    ErrorResponse,
 )
 from src.client import NpiWhere
 from datetime import date
@@ -86,3 +87,17 @@ async def test_search_by_organization_name():
     )
     assert result.results[0].basic.enumeration_date == date(2007, 2, 7)
     assert result.results[0].basic.status == NpiStatus.A
+
+
+@pytest.mark.asyncio
+@vcr_instance.use_cassette("search_with_error.yaml")
+async def test_search_with_error():
+    client = NpiClient()
+    request = NpiWhere()
+    response = await client.lookup(request)
+    assert response is not None
+    assert isinstance(response, ErrorResponse)
+    assert len(response.errors) == 1
+    assert response.errors[0].description == "No valid search criteria provided"
+    assert response.errors[0].field == "generic"
+    assert response.errors[0].number == "04"

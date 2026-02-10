@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - npiregistry.cms.hhs.gov
+      User-Agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://npiregistry.cms.hhs.gov/api/?version=2.1&limit=10&skip=0
+  response:
+    body:
+      string: '{"Errors":[{"description":"No valid search criteria provided","field":"generic","number":"04"}]}'
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=86400
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '96'
+      Content-Security-Policy:
+      - default-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self'
+        'unsafe-inline'; img-src 'self' data:;
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 10 Feb 2026 09:22:59 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - same-origin
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Via:
+      - 1.1 06e338caf45078abd373430683aff538.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 3VZbK66C2V_nnh4IYCdYtptujQ02gj0xhjJIZJPoMR74OAojWcGsmQ==
+      X-Amz-Cf-Pop:
+      - BOS50-P6
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: ''
+version: 1
