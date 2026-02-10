@@ -8,9 +8,11 @@ from src.domain.models import (
     OrganizationProviderResponse,
     ErrorResponse,
 )
-from src.client import NpiWhere
+from src.client import NpiWhere, NpiApiError
 from datetime import date
 from src.domain.enums import NpiStatus
+from pytest_httpx import HTTPXMock
+import httpx
 
 
 @pytest.mark.asyncio
@@ -101,3 +103,13 @@ async def test_search_with_error():
     assert response.errors[0].description == "No valid search criteria provided"
     assert response.errors[0].field == "generic"
     assert response.errors[0].number == "04"
+
+
+@pytest.mark.asyncio
+async def test_exception_raising(httpx_mock: HTTPXMock):
+    httpx_mock.add_exception(httpx.TimeoutException("timeout"))
+
+    client = NpiClient()
+    request = NpiWhere(first_name="Jane", last_name="Doe", state="NY")
+    with pytest.raises(NpiApiError):
+        await client.lookup(request)
