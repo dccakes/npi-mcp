@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - python-httpx/0.28.1
     method: GET
-    uri: https://npiregistry.cms.hhs.gov/api/?version=2.1&number=1114382983
+    uri: https://npiregistry.cms.hhs.gov/api/?version=2.1&first_name=JONATHON&last_name=LEE&state=OR
   response:
     body:
       string: '{"result_count":1,"results":[{"addresses":[{"address_1":"790 REMINGTON
@@ -38,7 +38,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 09 Feb 2026 20:35:34 GMT
+      - Tue, 10 Feb 2026 09:07:10 GMT
       Expires:
       - Thu, 01 Jan 1970 00:00:00 GMT
       Pragma:
@@ -48,11 +48,11 @@ interactions:
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
       Via:
-      - 1.1 35be33ade0277c30a9cd9f9886b7151e.cloudfront.net (CloudFront)
+      - 1.1 e681dabd190d3783884c0bade3bdc5ca.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - kOV4j3ld1uaKNn8WLaXFnf4QV7Jxst4g0RO22Gz_f7ye8xoCqFwXBA==
+      - L0OIoQtnxry1njGGu2GReF_GLh9CPp4_FsQLXTDhl34uVdC1hCqs5g==
       X-Amz-Cf-Pop:
-      - JFK50-P9
+      - PHL51-P1
       X-Cache:
       - Miss from cloudfront
       X-Content-Type-Options:
@@ -78,7 +78,7 @@ interactions:
       User-Agent:
       - python-httpx/0.28.1
     method: GET
-    uri: https://npiregistry.cms.hhs.gov/api/?version=2.1&limit=10&skip=0&number=1114382983
+    uri: https://npiregistry.cms.hhs.gov/api/?version=2.1&limit=2&skip=0&first_name=JONATHON&last_name=LEE&state=OR
   response:
     body:
       string: '{"result_count":1,"results":[{"addresses":[{"address_1":"790 REMINGTON
@@ -103,7 +103,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 10 Feb 2026 09:20:57 GMT
+      - Tue, 10 Feb 2026 09:20:58 GMT
       Expires:
       - Thu, 01 Jan 1970 00:00:00 GMT
       Pragma:
@@ -113,9 +113,9 @@ interactions:
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
       Via:
-      - 1.1 e61d793f1b467706962fbe277321dfd6.cloudfront.net (CloudFront)
+      - 1.1 2dbc9189aa4d499dd6360903896d0dfc.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - VlDCS9AjAmWhQFEuKiP7vDsc-jmCOY0ahZ9Flk_w5ghtJJ_McBx3QQ==
+      - LTsP1hcavI4QonyFh2MgvSXMv6VgLxq_V6TVIBBSVqeKDPNM8EXRwQ==
       X-Amz-Cf-Pop:
       - BOS50-P6
       X-Cache:

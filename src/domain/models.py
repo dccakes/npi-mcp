@@ -14,6 +14,12 @@ from src.domain.enums import (
 class NpiBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    enumeration_date: dt.date | None = Field(
+        default=None, description="The enumeration date"
+    )
+    last_updated: dt.date | None = Field(default=None, description="The last updated")
+    status: NpiStatus | None = Field(default=None, description="The status")
+
 
 class PersonProvider(NpiBase):
     first_name: str | None = Field(default=None, description="The first name")
@@ -26,15 +32,6 @@ class PersonProvider(NpiBase):
     sole_proprietor: str | None = Field(
         default=None, description="The sole proprietor"
     )  # TODO: enum
-    enumeration_date: dt.date | None = Field(
-        default=None, description="The enumeration date"
-    )  # could be duplicate?
-    last_updated: dt.date | None = Field(
-        default=None, description="The last updated"
-    )  # could be duplicate?
-    status: NpiStatus | None = Field(
-        default=None, description="The status"
-    )  # TODO: enum - could be duplicate?
 
 
 class OrganizationProvider(NpiBase):

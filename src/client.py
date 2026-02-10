@@ -7,9 +7,8 @@ from pydantic import BaseModel, Field
 class NpiSearchRequest(BaseModel):
     version: str = "2.1"
 
-
-# limit: int = 10
-# skip: int = 0
+    limit: int = Field(default=10, description="The limit", ge=1, le=200)
+    skip: int = Field(default=0, description="The skip", ge=0)
 
 
 class NpiWhere(NpiSearchRequest):
@@ -42,7 +41,5 @@ class NpiClient:
             raise Exception(f"Failed to lookup NPI number: {response.status_code}")
 
         data = response.json()
-        if data["result_count"] == 0:
-            return None
 
         return SearchResponse.model_validate(data)
