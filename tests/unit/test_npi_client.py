@@ -7,6 +7,7 @@ from src.domain.models import (
     IndividualProviderResponse,
     OrganizationProviderResponse,
     ErrorResponse,
+    SearchResponse,
 )
 from src.client import NpiWhere, NpiApiError
 from datetime import date
@@ -22,6 +23,7 @@ async def test_search_by_npi_number():
     request = NpiWhere(npi_number="1114382983")
     result = await client.lookup(request)
     assert result is not None
+    assert isinstance(result, SearchResponse)
     assert result.result_count == 1
     assert len(result.results) == 1
     assert isinstance(result.results[0], IndividualProviderResponse)
@@ -40,6 +42,7 @@ async def test_search_by_name():
     request = NpiWhere(first_name="JONATHON", last_name="LEE", state="OR", limit=2)
     result = await client.lookup(request)
     assert result is not None
+    assert isinstance(result, SearchResponse)
     assert result.result_count == 1
     assert len(result.results) == 1
     assert isinstance(result.results[0], IndividualProviderResponse)
@@ -56,6 +59,7 @@ async def test_search_by_name_no_results():
     request = NpiWhere(first_name="JONATHON", last_name="LEE", state="NY")
     result = await client.lookup(request)
     print(result)
+    assert isinstance(result, SearchResponse)
     assert result is not None
     assert result.result_count == 0
     assert len(result.results) == 0
@@ -72,6 +76,7 @@ async def test_search_by_organization_name():
     )
     result = await client.lookup(request)
     assert result is not None
+    assert isinstance(result, SearchResponse)
     assert result.result_count == 1
     assert len(result.results) == 1
     assert isinstance(result.results[0], OrganizationProviderResponse)
