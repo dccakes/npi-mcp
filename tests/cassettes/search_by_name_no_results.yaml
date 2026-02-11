@@ -1,0 +1,120 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - npiregistry.cms.hhs.gov
+      User-Agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://npiregistry.cms.hhs.gov/api/?version=2.1&first_name=JONATHON&last_name=LEE&state=NY
+  response:
+    body:
+      string: '{"result_count":0,"results":[]}'
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=86400
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '31'
+      Content-Security-Policy:
+      - default-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self'
+        'unsafe-inline'; img-src 'self' data:;
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 10 Feb 2026 09:05:30 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - same-origin
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Via:
+      - 1.1 2a78cba32e1e70413cb851835f0eb89c.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - oJtU5hHDEIPyh-bogBDZG885C7b5znyJkJYRsXBBF0dv0JYWGgPgEA==
+      X-Amz-Cf-Pop:
+      - PHL51-P1
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - npiregistry.cms.hhs.gov
+      User-Agent:
+      - python-httpx/0.28.1
+    method: GET
+    uri: https://npiregistry.cms.hhs.gov/api/?version=2.1&limit=10&skip=0&first_name=JONATHON&last_name=LEE&state=NY
+  response:
+    body:
+      string: '{"result_count":0,"results":[]}'
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=86400
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '31'
+      Content-Security-Policy:
+      - default-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self'
+        'unsafe-inline'; img-src 'self' data:;
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 10 Feb 2026 09:20:58 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - same-origin
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Via:
+      - 1.1 a91e28377332a34477c1750c7f095da0.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 7E7lNmuCGIElNObMxRfvUXGvHNd3MeiPh9girs6hB1F9xEZAG-gs3w==
+      X-Amz-Cf-Pop:
+      - BOS50-P6
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: ''
+version: 1

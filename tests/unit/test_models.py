@@ -1,5 +1,13 @@
+from datetime import datetime, timezone
+
+from src.domain.enums import (
+    NpiCountryAbbreviation,
+    NpiEnumerationType,
+    NpiStateAbbreviation,
+)
 from src.domain.models import (
-    ProviderResponse,
+    IndividualProviderResponse,
+    OrganizationProviderResponse,
     PersonProvider,
     OrganizationProvider,
     Address,
@@ -9,13 +17,15 @@ from src.domain.models import (
     Error,
 )
 
+_EPOCH = datetime.fromtimestamp(1717987200, tz=timezone.utc)
+
 
 def test_person_provider_result_parsing():
-    result = ProviderResponse(
+    result = IndividualProviderResponse(
         number="1234567890",
-        enumeration_type="NPI-1",
-        created_epoch="1717987200",
-        last_updated_epoch="1717987200",
+        enumeration_type=NpiEnumerationType.NPI_1,
+        created_epoch=_EPOCH,
+        last_updated_epoch=_EPOCH,
         basic=PersonProvider(
             first_name="John",
             last_name="Doe",
@@ -27,11 +37,11 @@ def test_person_provider_result_parsing():
 
 
 def test_organization_provider_result_parsing():
-    result = ProviderResponse(
+    result = OrganizationProviderResponse(
         number="1234567890",
-        enumeration_type="NPI-2",
-        created_epoch="1717987200",
-        last_updated_epoch="1717987200",
+        enumeration_type=NpiEnumerationType.NPI_2,
+        created_epoch=_EPOCH,
+        last_updated_epoch=_EPOCH,
         basic=OrganizationProvider(
             organization_name="Acme Health Clinic",
         ),
@@ -45,9 +55,9 @@ def test_basic_address_parsing():
         address_1="123 Main St",
         address_2="Suite 100",
         city="New York",
-        state="NY",
+        state=NpiStateAbbreviation.NY,
         postal_code="10010",
-        country_code="US",
+        country_code=NpiCountryAbbreviation.US,
         country_name="United States",
         address_type="DOM",
         address_purpose="LOCATION",
@@ -57,9 +67,9 @@ def test_basic_address_parsing():
     assert result.address_1 == "123 Main St"
     assert result.address_2 == "Suite 100"
     assert result.city == "New York"
-    assert result.state.value == "NY"
+    assert result.state is not None and result.state.value == "NY"
     assert result.postal_code == "10010"
-    assert result.country_code.value == "US"
+    assert result.country_code is not None and result.country_code.value == "US"
     assert result.country_name == "United States"
     assert result.address_type == "DOM"
     assert result.address_purpose == "LOCATION"
@@ -70,14 +80,14 @@ def test_basic_taxonomy_parsing():
         code="207R00000X",
         desc="Internal Medicine",
         primary=True,
-        state="NY",
+        state=NpiStateAbbreviation.NY,
         license="123456",
         taxonomy_group="",
     )
     assert result.code == "207R00000X"
     assert result.desc == "Internal Medicine"
     assert result.primary is True
-    assert result.state.value == "NY"
+    assert result.state is not None and result.state.value == "NY"
     assert result.license == "123456"
     assert result.taxonomy_group == ""
 
@@ -86,11 +96,11 @@ def test_search_response_parsing():
     result = SearchResponse(
         result_count=1,
         results=[
-            ProviderResponse(
+            IndividualProviderResponse(
                 number="1234567890",
-                enumeration_type="NPI-1",
-                created_epoch="1717987200",
-                last_updated_epoch="1717987200",
+                enumeration_type=NpiEnumerationType.NPI_1,
+                created_epoch=_EPOCH,
+                last_updated_epoch=_EPOCH,
                 basic=PersonProvider(
                     first_name="John",
                     last_name="Doe",
@@ -100,6 +110,7 @@ def test_search_response_parsing():
     )
     assert result.result_count == 1
     assert len(result.results) == 1
+    assert isinstance(result.results[0], IndividualProviderResponse)
     assert result.results[0].number == "1234567890"
     assert result.results[0].enumeration_type.value == "NPI-1"
     assert result.results[0].created_epoch.timestamp() == 1717987200.0
@@ -110,7 +121,7 @@ def test_search_response_parsing():
 
 def test_error_response_parsing():
     result = ErrorResponse(
-        errors=[
+        Errors=[
             Error(
                 description="Invalid request",
                 field="first_name",
