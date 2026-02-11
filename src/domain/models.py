@@ -75,9 +75,28 @@ class _ProviderResponseBase(NpiBase):
     number: str = Field(description="The 10-digit NPI number")
     created_epoch: dt.datetime = Field(description="The created epoch")
     last_updated_epoch: dt.datetime = Field(description="The last updated epoch")
-    addresses: list["Address"] | None = Field(default=None, description="The addresses")
-    taxonomies: list["Taxonomy"] | None = Field(
-        default=None, description="The taxonomies"
+    addresses: list["Address"] = Field(
+        default_factory=list, description="The addresses"
+    )
+    taxonomies: list["Taxonomy"] = Field(
+        default_factory=list, description="The taxonomies"
+    )
+    identifiers: list["Identifier"] = Field(
+        default_factory=list,
+        description="Other identifiers (Medicaid, state licenses, etc.)",
+    )
+    other_names: list["OtherName"] = Field(
+        default_factory=list,
+        description="Alternative names (DBA, former names, etc.)",
+    )
+    endpoints: list["Endpoint"] = Field(
+        default_factory=list,
+        description="Health Information Exchange endpoints",
+    )
+    practice_locations: list["Address"] = Field(
+        default_factory=list,
+        description="Practice locations",
+        alias="practiceLocations",
     )
 
 
@@ -124,7 +143,7 @@ class Taxonomy(NpiBase):
     license: str | None = Field(default=None, description="The license")
     state: NpiStateAbbreviation | None = Field(default=None, description="The state")
     desc: str | None = Field(
-        default=None, description="The description - dervied from code"
+        default=None, description="The description - derived from code"
     )
     primary: bool | None = Field(
         default=None, description="The primary taxonomy switch"
@@ -133,15 +152,108 @@ class Taxonomy(NpiBase):
 
 
 class Identifier(NpiBase):
-    pass
+    """Other identifiers for the provider (e.g., Medicaid, state license numbers)"""
+
+    code: str = Field(description="The identifier type code")
+    desc: str | None = Field(
+        default=None, description="The identifier type description"
+    )
+    identifier: str = Field(description="The identifier value")
+    issuer: str | None = Field(default=None, description="The issuing entity")
+    state: NpiStateAbbreviation | None = Field(
+        default=None, description="The state that issued the identifier"
+    )
 
 
 class OtherName(NpiBase):
-    pass
+    """Alternative names for organizations (DBA, former names, etc.)"""
+
+    code: str = Field(description="The name type code")
+    type: str | None = Field(
+        default=None,
+        description="The name type (e.g., 'Doing Business As', 'Former Legal Business Name')",
+    )
+    organization_name: str | None = Field(
+        default=None, description="The alternative organization name"
+    )
+    first_name: str | None = Field(
+        default=None, description="The alternative first name (for individuals)"
+    )
+    last_name: str | None = Field(
+        default=None, description="The alternative last name (for individuals)"
+    )
+    middle_name: str | None = Field(
+        default=None, description="The alternative middle name (for individuals)"
+    )
+    name_prefix: str | None = Field(
+        default=None, description="The alternative name prefix"
+    )
+    name_suffix: str | None = Field(
+        default=None, description="The alternative name suffix"
+    )
+    credential: str | None = Field(
+        default=None, description="The alternative credential"
+    )
 
 
 class Endpoint(NpiBase):
-    pass
+    """Health Information Exchange endpoints (Direct messaging, FHIR, etc.)"""
+
+    endpoint: str = Field(
+        description="The endpoint URL or email address for HIE communication"
+    )
+    endpoint_type: str | None = Field(
+        default=None,
+        description="The endpoint type (e.g., 'DIRECT', 'FHIR', 'REST')",
+        alias="endpointType",
+    )
+    endpoint_type_description: str | None = Field(
+        default=None,
+        description="Human-readable endpoint type description",
+        alias="endpointTypeDescription",
+    )
+    endpoint_description: str | None = Field(
+        default=None,
+        description="Description of this specific endpoint",
+        alias="endpointDescription",
+    )
+    affiliation: str | None = Field(
+        default=None,
+        description="Affiliation indicator (Y/N)",
+    )
+    use: str | None = Field(
+        default=None,
+        description="Use code (e.g., 'HIE' for Health Information Exchange)",
+    )
+    use_description: str | None = Field(
+        default=None,
+        description="Human-readable use description",
+        alias="useDescription",
+    )
+    content_type: str | None = Field(
+        default=None,
+        description="Content type code (e.g., 'CSV', 'XML', 'JSON')",
+        alias="contentType",
+    )
+    content_type_description: str | None = Field(
+        default=None,
+        description="Human-readable content type description",
+        alias="contentTypeDescription",
+    )
+    # Address fields for the endpoint location
+    address_1: str | None = Field(default=None, description="The address line 1")
+    address_type: str | None = Field(
+        default=None,
+        description="The address type (DOM/FGN)",
+        alias="address_type",
+    )
+    city: str | None = Field(default=None, description="The city")
+    state: NpiStateAbbreviation | None = Field(default=None, description="The state")
+    postal_code: str | None = Field(default=None, description="The postal code")
+    country_code: NpiCountryAbbreviation | None = Field(
+        default=None, description="The country code"
+    )
+    country_name: str | None = Field(default=None, description="The country name")
 
 
 class SearchResponse(NpiBase):
