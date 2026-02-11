@@ -3,7 +3,6 @@ import pytest_asyncio
 from fastmcp.client import Client
 from fastmcp.client.transports import FastMCPTransport
 from tests.conftest import vcr_instance
-from src.client import NpiWhere
 from src.main import mcp
 
 
@@ -17,16 +16,18 @@ async def main_mcp_client():
 async def test_list_tools(main_mcp_client: Client[FastMCPTransport]):
     list_tools = await main_mcp_client.list_tools()
 
-    assert len(list_tools) == 1
-    assert list_tools[0].name == "lookup_tool"
+    assert len(list_tools) == 3
+    assert list_tools[0].name == "lookup_npi_number"
+    assert list_tools[1].name == "search_individual_providers"
+    assert list_tools[2].name == "search_organizations"
 
 
 @pytest.mark.asyncio
 @vcr_instance.use_cassette("search_by_npi_number_tool.yaml")
 async def test_lookup_tool(main_mcp_client: Client[FastMCPTransport]):
     lookup_tool = await main_mcp_client.call_tool(
-        name="lookup_tool",
-        arguments={"where": NpiWhere(npi_number="1114382983").model_dump()},
+        name="lookup_npi_number",
+        arguments={"npi_number": "1114382983"},
     )
 
     assert lookup_tool is not None
