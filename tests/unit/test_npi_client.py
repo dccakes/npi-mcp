@@ -95,6 +95,17 @@ async def test_search_by_organization_name():
     assert result.results[0].basic.enumeration_date == date(2007, 2, 7)
     assert result.results[0].basic.status == NpiStatus.A
 
+    # Test other_names (alternative names)
+    assert len(result.results[0].other_names) >= 2
+    # Find the "Doing Business As" name
+    dba_names = [
+        n
+        for n in result.results[0].other_names
+        if "H2 HEALTH" in (n.organization_name or "")
+    ]
+    assert len(dba_names) >= 1
+    assert dba_names[0].organization_name == "H2 HEALTH"
+
 
 @pytest.mark.asyncio
 @vcr_instance.use_cassette("search_with_error.yaml")

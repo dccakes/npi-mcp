@@ -133,3 +133,69 @@ def test_error_response_parsing():
     assert result.errors[0].description == "Invalid request"
     assert result.errors[0].field == "first_name"
     assert result.errors[0].number == "01"
+
+
+def test_identifier_parsing():
+    """Test parsing of provider identifiers"""
+    from src.domain.models import Identifier
+    from src.domain.enums import NpiStateAbbreviation
+
+    data = {
+        "code": "05",
+        "desc": "MEDICAID",
+        "identifier": "001289017",
+        "issuer": None,
+        "state": "CT",
+    }
+    identifier = Identifier.model_validate(data)
+    assert identifier.code == "05"
+    assert identifier.desc == "MEDICAID"
+    assert identifier.identifier == "001289017"
+    assert identifier.state == NpiStateAbbreviation.CT
+
+
+def test_other_name_parsing():
+    """Test parsing of alternative names"""
+    from src.domain.models import OtherName
+
+    data = {
+        "code": "3",
+        "organization_name": "H2 HEALTH",
+        "type": "Doing Business As",
+    }
+    other_name = OtherName.model_validate(data)
+    assert other_name.code == "3"
+    assert other_name.type == "Doing Business As"
+    assert other_name.organization_name == "H2 HEALTH"
+
+
+def test_endpoint_parsing():
+    """Test parsing of HIE endpoints"""
+    from src.domain.models import Endpoint
+    from src.domain.enums import NpiStateAbbreviation, NpiCountryAbbreviation
+
+    data = {
+        "address_1": "1047 Oakwood Ave",
+        "address_type": "DOM",
+        "affiliation": "N",
+        "city": "Des Plaines",
+        "contentType": "CSV",
+        "contentTypeDescription": "CSV",
+        "country_code": "US",
+        "country_name": "United States",
+        "endpoint": "john.oplawski@uprisedirect.com",
+        "endpointDescription": "secure email address",
+        "endpointType": "DIRECT",
+        "endpointTypeDescription": "Direct Messaging Address",
+        "postal_code": "600166332",
+        "state": "IL",
+        "use": "HIE",
+        "useDescription": "Health Information Exchange (HIE)",
+    }
+    endpoint = Endpoint.model_validate(data)
+    assert endpoint.endpoint == "john.oplawski@uprisedirect.com"
+    assert endpoint.endpoint_type == "DIRECT"
+    assert endpoint.endpoint_type_description == "Direct Messaging Address"
+    assert endpoint.use == "HIE"
+    assert endpoint.state == NpiStateAbbreviation.IL
+    assert endpoint.country_code == NpiCountryAbbreviation.US
