@@ -1,5 +1,9 @@
 # NPI MCP Server
 
+[![CI](https://github.com/dccakes/npi-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/dccakes/npi-mcp/actions/workflows/ci.yml)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 An MCP (Model Context Protocol) server that provides tools for searching the National Provider Identifier (NPI) Registry. This server enables AI assistants to look up healthcare providers and organizations from the NPPES database.
 
 ## Deployment
