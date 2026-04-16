@@ -2,9 +2,36 @@
 
 An MCP (Model Context Protocol) server that provides tools for searching the National Provider Identifier (NPI) Registry. This server enables AI assistants to look up healthcare providers and organizations from the NPPES database.
 
-## Deployment
+## Live Demo
 
-The server is deployed at: **https://dc-npi-mcp.fastmcp.app/mcp**
+The server is publicly deployed — no setup required:
+
+**MCP endpoint:** `https://dc-npi-mcp.fastmcp.app/mcp`
+
+Try it instantly in Claude Desktop by adding the config below, or test any tool directly via the [FastMCP playground](https://fastmcp.com).
+
+## Use with Claude Desktop
+
+Add this to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "npi-registry": {
+      "url": "https://dc-npi-mcp.fastmcp.app/mcp"
+    }
+  }
+}
+```
+
+**Config file location:**
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+After saving, restart Claude Desktop. You can then ask Claude things like:
+- *"Look up NPI number 1234567890"*
+- *"Find cardiologists named Smith in New York"*
+- *"Search for hospitals named Mercy in California"*
 
 ## Overview
 
@@ -75,7 +102,7 @@ Search for healthcare organizations by name and state.
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/dccakes/npi-mcp.git
 cd npi-mcp
 
 # Install dependencies
